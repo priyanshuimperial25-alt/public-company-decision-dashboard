@@ -1,0 +1,19 @@
+Free SEC data connection (Cloudflare Pages)
+===========================================
+
+This project uses SEC EDGAR company tickers, submissions and XBRL company-facts data. No market-data API subscription or API key is used. This data route covers SEC filers, not every listed company worldwide. It does not provide a live share price, analyst estimates, or an automatic investment recommendation. Management discussion is linked from the latest filing rather than summarized from structured XBRL.
+
+SEC's official APIs do not support browser CORS and ask automated clients to identify themselves with a User-Agent. The Pages Functions in functions/ provide the same-origin backend proxy. GitHub Pages cannot run these functions, so deploy this folder as a Cloudflare Pages project to activate live lookup.
+
+Setup:
+1. Sign in to a Cloudflare account and create a Pages project connected to the public-company-decision-dashboard GitHub repository.
+2. Set the production branch to main, framework preset to None, build command blank, and build output directory to `.` (repository root). Enable Functions by keeping the functions/ directory at repository root.
+3. In Pages > Settings > Variables and Secrets, add SEC_USER_AGENT as a plain text environment variable. Format: CompanyDecisionDashboard/1.0 contact: YOUR-MONITORED-EMAIL. Use an email address you control because SEC fair-access guidance asks automated clients to identify themselves.
+4. Redeploy. The front end calls /api/search and /api/company/{CIK} on the Pages origin. Preserve the same repository root structure.
+
+Do not add an API key; this SEC route has no provider key. Cache TTLs are set in the SEC fetches and the returned data is labelled with the filing period. For high-traffic public use, add an appropriate rate limit and review SEC fair-access guidance.
+
+Official references:
+- SEC API and access guidance: https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data
+- SEC API overview (including CORS limitation): https://www.sec.gov/search-filings/edgar-application-programming-interfaces
+- Cloudflare Pages Functions deployment: https://developers.cloudflare.com/pages/functions/get-started/

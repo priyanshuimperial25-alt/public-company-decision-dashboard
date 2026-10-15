@@ -1,0 +1,7 @@
+Public Company Decision Dashboard — deployment notes
+
+The free SEC company lookup needs the Cloudflare Pages Functions in this folder. GitHub Pages can serve the HTML but cannot run the required backend. Follow DEPLOY-SEC.txt to connect the GitHub repository to Cloudflare Pages and configure SEC_USER_AGENT before expecting live lookup to work.
+
+The built-in SEC route covers SEC filing data, not every public company or live quote. It does not make a buy/sell recommendation. Keep the dated Eternal sample clearly identified as an example until replaced with a neutral start view.
+
+Public availability does not guarantee search indexing or ranking. Add a canonical URL and sitemap after the final hosting domain is known, then submit it through the chosen search engine's webmaster tools if desired.
