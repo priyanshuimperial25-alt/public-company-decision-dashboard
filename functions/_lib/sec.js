@@ -2,7 +2,7 @@ const SEC_ROOT = "https://www.sec.gov";
 const DATA_ROOT = "https://data.sec.gov";
 export async function secJson(url, env, ttl = 3600) {
   const agent = env.SEC_USER_AGENT;
-  if (!agent || !/^[^\s]+(?:\/[^\s]+)?\s+contact:\s+[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(agent)) throw new Error("Set SEC_USER_AGENT as CompanyDecisionDashboard/1.0 contact: your-monitored-email@example.com in Cloudflare Pages production settings.");
+  if (!agent || !/^[^\s]+(?:\/[^\s]+)?\s+contact:\s+[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(agent)) throw new Error("SEC_USER_AGENT is missing or invalid. In Cloudflare Pages > Settings > Variables and Secrets, set CompanyDecisionDashboard/1.0 contact: your-real-monitored-email@example.com and replace the example with your monitored email address.");
   const response = await fetch(url, { headers: { "User-Agent": agent, Accept: "application/json" }, cf: { cacheTtl: ttl, cacheEverything: true } });
   if (!response.ok) throw new Error(`SEC returned HTTP ${response.status}. Verify SEC_USER_AGENT and retry later.`);
   return response.json();
