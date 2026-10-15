@@ -68,7 +68,7 @@ window.lookupCompany = async function lookupCompany() {
   p.classList.remove('hide');p.innerHTML=`<b>Searching SEC EDGAR for “${esc(q)}”…</b><p class="method">Free official filing data; coverage is limited to SEC registrants.</p>`;
   try{
     const response=await fetch(`/api/search?q=${encodeURIComponent(q)}`);
-    if(!response.ok)throw new Error(response.status===404?'This host does not run the SEC data service yet. Deploy this project to Cloudflare Pages using DEPLOY-SEC.txt.':'SEC lookup service is not deployed or is unavailable.');
+    if(!response.ok)throw new Error(response.status===404?'This host does not run the SEC data service yet. Deploy this project to Cloudflare Pages using DEPLOY-SEC.txt.':'SEC service returned HTTP ' + response.status + '. Verify SEC_USER_AGENT in Cloudflare Pages.');
     const result=await response.json();if(result.error)throw new Error(result.error);
     if(!result.companies?.length){p.innerHTML=`<b>No SEC issuer matched “${esc(q)}”.</b><p class="method">Try an exact ticker or legal name. This free route does not cover every global listing.</p>`;return;}
     p.innerHTML=`<div class="section-title"><h3>Select the SEC issuer</h3><small>${esc(result.coverage)}</small></div><div class="bars">${result.companies.map(c=>`<button class="btn" style="text-align:left" onclick="loadSecCompany('${esc(c.cik)}')"><b>${esc(c.name)}</b> · ${esc(c.ticker)} · ${esc(c.exchange)} · CIK ${esc(c.cik)}</button>`).join('')}</div><div class="source">Prices and valuations are not part of this free SEC feed. The dashboard will say “Not rated” until those inputs are available.</div>`;
